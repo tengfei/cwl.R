@@ -611,7 +611,7 @@ OutputSchema <- setRefClass("OutputSchema", contains = "Schema")
 #'
 #' @export InputParameter
 #' @exportClass InputParameter 
-InputParameter <- setRefClass("InputParameter",
+InputParameter <- setRefClass("InputParameter", contains = "Parameter",
                               fields = list(
                                   id = "character",
                                   inputBinding = "Binding"
@@ -623,7 +623,7 @@ InputParameter <- setRefClass("InputParameter",
 #'
 #' @export OutputParameter
 #' @exportClass OutputParameter
-OutputParameter <- setRefClass("OutputParameter",
+OutputParameter <- setRefClass("OutputParameter", contains = "Parameter",
                                fields = list(
                                    id = "character"
                                ))

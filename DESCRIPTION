@@ -1,7 +1,7 @@
 Package: cwl
 Type: Package
 Title: R objects for common work flow language
-Version: 0.0.3
+Version: 0.0.4
 Date: 2015-06-01
 Author: Tengfei Yin <tengfei.yin@sbgenomics.com>
 Maintainer: Tengfei Yin <tengfei.yin@sbgenomics.com>
