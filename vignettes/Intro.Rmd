@@ -1,0 +1,12 @@
+---
+title: "R objects for CWL"
+author: "Tengfei Yin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{R objects for CWL}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+Coming Soon
