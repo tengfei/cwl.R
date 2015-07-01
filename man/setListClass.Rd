@@ -4,7 +4,8 @@
 \alias{setListClass}
 \title{List Class generator.}
 \usage{
-setListClass(elementType = NULL, suffix = "List", contains = NULL)
+setListClass(elementType = NULL, suffix = "List", contains = NULL,
+  where = topenv(parent.frame()))
 }
 \arguments{
 \item{elementType}{[character]}
@@ -12,6 +13,8 @@ setListClass(elementType = NULL, suffix = "List", contains = NULL)
 \item{suffix}{[character] default is "List"}
 
 \item{contains}{[character] class name.}
+
+\item{where}{environment.}
 }
 \value{
 S4 class generator
@@ -19,5 +22,14 @@ S4 class generator
 \description{
 Take simple approach to extens list class, please note that in IRanges package
 there is more generic List class with utilities.
+}
+\examples{
+\dontrun{
+A <- setClass("A")
+B <- setClass("B", contains = "A")
+C <- setClass("C", contains = "B")
+AList <- setListClass("A")
+AList(list(B(), C()))
+}
 }
 

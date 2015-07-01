@@ -45,13 +45,23 @@ setClassUnion("Complex", c("Record", "Enum", "list"))
 #' @param elementType [character]
 #' @param suffix [character] default is "List"
 #' @param contains [character] class name.
+#' @param where environment.
 #'
 #' @return S4 class generator
+#'
+#' @examples
+#' \dontrun{
+#' A <- setClass("A")
+#' B <- setClass("B", contains = "A")
+#' C <- setClass("C", contains = "B")
+#' AList <- setListClass("A")
+#' AList(list(B(), C()))
+#' }
 setListClass <- function(elementType = NULL, suffix = "List",
-                         contains = NULL){
+                         contains = NULL, where = topenv(parent.frame())){
     stopifnot(is.character(elementType))
     name <- paste0(elementType, suffix)
-    gen <- setClass(name, contains = c("list", contains))
+    gen <- setClass(name, contains = c("list", contains), where = where)
     setValidity(name, function(object) {
         idx <- sapply(object, is, elementType)
         if (!all(idx))
@@ -60,6 +70,12 @@ setListClass <- function(elementType = NULL, suffix = "List",
     })
     return(gen)
 }
+
+
+
+
+
+
 
 ########################################################################
 ## Data Type
