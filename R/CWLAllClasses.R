@@ -65,8 +65,11 @@ setListClass <- function(elementType = NULL, suffix = "List",
 ## Data Type
 ########################################################################
 
-## File
-setListClass("File")
+#' FileList Class
+#' 
+#' @export FileList
+#' @exportClass FileList
+FileList <- setListClass("File")
 
 #' File Class 
 #'
@@ -236,8 +239,11 @@ FileDef <- setRefClass("FileDef", fields = list(
                                       fileContent = "characterORExpression"
 ))
 
-## Class FileDefList
-setListClass("FileDef")
+#' FileDefList
+#'
+#' @export FileDefList
+#' @exportClass FileDefList
+FileDefList <- setListClass("FileDef")
 
 #' CreateFileRequirement Class
 #'
@@ -275,8 +281,11 @@ EnvironmentDef <- setRefClass("EnvironmentDef",
                               ))
 
 
-## Class EnvironmentDefList
-setListClass("EnvironmentDef")
+#' EnvironmentDefList
+#'
+#' @export EnvironmentDefList
+#' @exportClass EnvironmentDefList
+EnvironmentDefList <- setListClass("EnvironmentDef")
 
 #' EnvVarRequirement Class
 #'
@@ -347,8 +356,11 @@ ExpressionEngineRequirement <-
 ## Schema
 ##----------------------------------------------------------------------
 
-## Class SchemaList
-setListClass("Schema")
+#' SchemaList
+#'
+#' @export SchemaList
+#' @exportClass SchemaList
+SchemaList <- setListClass("Schema")
 
 #' Schema Class
 #'
@@ -387,8 +399,11 @@ SchemaDef <- setRefClass("SchemaDef", contains = "Schema",
                              name = "character"
                          ))
 
-## Class SchemaDefList
-setListClass("SchemaDef")
+#' SchemaDefList
+#'
+#' @export SchemaDefList
+#' @exportClass SchemaDefList 
+SchemaDefList <- setListClass("SchemaDef")
 
 setRefClass("SchemaDefRequirement", contains = "ProcessRequirement",
             fields = list(
@@ -479,10 +494,23 @@ Parameter <- setRefClass("Parameter",
                              }
                          ))
 
+#' InputParameterList
+#'
+#' @export InputParameterList
+#' @exportClass InputParameterList
+InputParameterList <- setListClass("InputParameter")
 
-setListClass("InputParameter")
-setListClass("OutputParameter")
-setListClass("ProcessRequirement")
+#' OutputParameterList
+#'
+#' @export OutputParameterList
+#' @exportClass OutputParameterList
+OutputParameterList <- setListClass("OutputParameter")
+
+#' ProcessRequirementList
+#'
+#' @export ProcessRequirementList
+#' @exportClass ProcessRequirementList
+ProcessRequirementList <- setListClass("ProcessRequirement")
 
 #' Process Class
 #'
@@ -669,6 +697,7 @@ CommandLineBinding <- setRefClass("CommandLineBinding", contains = "Binding",
 setClassUnion("characterORCommandLineBinding",
               c("character", "CommandLineBinding"))
 
+## fixme:
 setListClass("characterORCommandLineBinding")
 
 #' CommandLineTool Class
@@ -998,9 +1027,23 @@ WorkflowStepOutput <- setRefClass("WorkflowStepOutput",
                                       id = "character"
                                   ))
 
-setListClass("WorkflowStepInput")
-setListClass("WorkflowStepOutput")
-setListClass("WorkflowStep")
+#' WorkflowStepInputList
+#'
+#' @export WorkflowStepInputList
+#' @exportClass WorkflowStepInputList
+WorkflowStepInputList <- setListClass("WorkflowStepInput")
+
+#' WorkflowStepOutputList
+#'
+#' @export WorkflowStepOutputList
+#' @exportClass WorkflowStepOutputList
+WorkflowStepOutputList <- setListClass("WorkflowStepOutput")
+
+#' WorkflowStepList
+#'
+#' @export WorkflowStepList
+#' @exportClass WorkflowStepList
+WorkflowStepList <- setListClass("WorkflowStep")
 
 
 #' WorkflowOutputParameter Class
@@ -1025,7 +1068,11 @@ WorkflowOutputParameter <-
                     linkMerge = "LinkMergeMethod"
                 ))
 
-setListClass("WorkflowOutputParameter", contains = "OutputParameterList")
+#' WorkflowOutputParameterList
+#'
+#' @export WorkflowOutputParameterList
+#' @exportClass WorkflowOutputParameterList
+WorkflowOutputParameterList <- setListClass("WorkflowOutputParameter", contains = "OutputParameterList")
 
 
 
