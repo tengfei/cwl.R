@@ -32,6 +32,6 @@ secondaryFiles for which the same rules apply.}
 \examples{
 f1 <- new("File")
 f2 <- File()
-new("FileList", list(f1, f2))
+FileList(f1, f2)
 }
 

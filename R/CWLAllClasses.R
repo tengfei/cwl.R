@@ -1,79 +1,96 @@
 ## Referecence/Credit:
 ## http://common-workflow-language.github.io/draft-2
 
+########################################################################
 ## Datatype
-.Primitive <- c("null",  # no value
+########################################################################
+.CWL.Primitive <- c("null",  # no value
                 "boolean", # a binary value
                 "int", # 32-bit signed integer
                 "long", # 64-bit signed integer
                 "float", # single precision (32-bit) 
                 "double", # double precision (64-bit)
                 "bytes", # sequence of uninterpreted 8-bit unsigned bytes
-                "string" # unicode character sequence
-                )
+                "string") # unicode character sequence
 
-## match to R primitve
-
-setClassUnion("Primitive", c(
-    "logical",
-    "integer",
-    "numeric",
-    "character"
-))
-
-.Complex <- c("record", # An object with one or more fields defined by name and type
+.CWL.Complex <- c("record", # An object with one or more fields defined by name and type
               "enum", # A value from a finite set of symbolic values
               "array", # An ordered sequence of values
-              "map" # An unordered collection of key/value pairs
-              )
+              "map") # An unordered collection of key/value pairs
 
-setClass("Record") # undefined
-setClass("Enum") # unefined
 
-setClassUnion("Complex", c("Record", "Enum", "list"))
-## setClass("Array") List like
-## setClass("Map")
+
+#' PrimitiveEnum
+#'
+#' Please check \code{cwl:::.CWL.Pritimive}
+#'
+#' @importFrom objectProperties setSingleEnum
+#' @importClassesFrom S4Vectors SimpleList List
+#' 
+#' @export PrimitiveEnum
+PrimitiveEnum <- setSingleEnum("Primitive" , levels = .CWL.Primitive)
+
+#' ComplexEnum
+#'
+#' Please check \code{cwl:::.CWL.Complex}
+#'
+#' @export ComplexEnum
+ComplexEnum <- setSingleEnum("Complex" , levels = .CWL.Primitive)
+
+#' DatatypeEnum
+#'
+#' Primitive + Complex + File
+#'
+#' @export DatatypeEnum
+DatatypeEnum <- setSingleEnum("Datatype",
+                              levels = c(.CWL.Primitive, .CWL.Complex, "file"))
+
 
 
 
 
 #' List Class generator.
 #'
-#' Take simple approach to extens list class, please note that in IRanges package
-#' there is more generic List class with utilities.
-#'
+#' Extends IRanges SimpleList class and return constructor.
+#' 
 #' @param elementType [character]
 #' @param suffix [character] default is "List"
 #' @param contains [character] class name.
 #' @param where environment.
-#'
-#' @return S4 class generator
-#'
-#' @examples
-#' \dontrun{
-#' A <- setClass("A")
-#' B <- setClass("B", contains = "A")
-#' C <- setClass("C", contains = "B")
-#' AList <- setListClass("A")
-#' AList(list(B(), C()))
-#' }
+#' 
+#' @return S4 class constructor
 setListClass <- function(elementType = NULL, suffix = "List",
                          contains = NULL, where = topenv(parent.frame())){
     stopifnot(is.character(elementType))
     name <- paste0(elementType, suffix)
-    gen <- setClass(name, contains = c("list", contains), where = where)
-    setValidity(name, function(object) {
-        idx <- sapply(object, is, elementType)
-        if (!all(idx))
-            paste("Elements must all be", elementType)
-        else TRUE
-    })
-    return(gen)
+    setClass(name, contains = c("SimpleList", contains), where = where,
+             prototype = prototype(elementType = elementType))
+
+    function(...){
+        listData <- .dotargsAsList(...)
+        S4Vectors:::new_SimpleList_from_list(name, listData)
+    }
+}
+
+## Function from IRanges
+.dotargsAsList <- function(...) {
+    listData <- list(...)
+  if (length(listData) == 1) {
+      arg1 <- listData[[1]]
+      if (is.list(arg1) || is(arg1, "List"))
+        listData <- arg1
+      ## else if (type == "integer" && class(arg1) == "character")
+      ##   listData <- strsplitAsListOfIntegerVectors(arg1) # weird special case
+  }
+  listData
 }
 
 
-
-
+## A <- setClass("A")
+## B <- setClass("B", contains = "A")
+## AList <- setListClass("A")
+## BList <- setListClass("B")
+## AList(A(), B())
 
 
 
@@ -82,6 +99,9 @@ setListClass <- function(elementType = NULL, suffix = "List",
 ########################################################################
 
 #' FileList Class
+#'
+#' @aliases FileList-class
+#' @param \dots element or list of the element.
 #' 
 #' @export FileList
 #' @exportClass FileList
@@ -109,7 +129,7 @@ FileList <- setListClass("File")
 #' @examples
 #' f1 <- new("File")
 #' f2 <- File()
-#' new("FileList", list(f1, f2))
+#' FileList(f1, f2)
 File <- setRefClass("File",
             fields = list(
                 path = "character",
@@ -120,8 +140,6 @@ File <- setRefClass("File",
 
 ## Class ANY: exists
 
-## Class DataType
-setClassUnion("DataType", c("Primitive", "Complex", "File",  "ANY"))
 
 ########################################################################
 ## Expression
@@ -257,6 +275,10 @@ FileDef <- setRefClass("FileDef", fields = list(
 
 #' FileDefList
 #'
+#' @aliases FileDefList-class
+#'
+#' @param \dots element or list of the element.
+#'
 #' @export FileDefList
 #' @exportClass FileDefList
 FileDefList <- setListClass("FileDef")
@@ -298,6 +320,10 @@ EnvironmentDef <- setRefClass("EnvironmentDef",
 
 
 #' EnvironmentDefList
+#' 
+#' @aliases EnvironmentDefList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export EnvironmentDefList
 #' @exportClass EnvironmentDefList
@@ -373,6 +399,10 @@ ExpressionEngineRequirement <-
 ##----------------------------------------------------------------------
 
 #' SchemaList
+#' 
+#' @aliases SchemaList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export SchemaList
 #' @exportClass SchemaList
@@ -416,6 +446,11 @@ SchemaDef <- setRefClass("SchemaDef", contains = "Schema",
                          ))
 
 #' SchemaDefList
+#' 
+#' @aliases SchemaDefList-class
+#'
+#' @param \dots element or list of the element.
+#'
 #'
 #' @export SchemaDefList
 #' @exportClass SchemaDefList 
@@ -511,18 +546,32 @@ Parameter <- setRefClass("Parameter",
                          ))
 
 #' InputParameterList
+#' 
+#' @aliases InputParameterList-class
+#'
+#' @param \dots element or list of the element.
+#'
 #'
 #' @export InputParameterList
 #' @exportClass InputParameterList
 InputParameterList <- setListClass("InputParameter")
 
 #' OutputParameterList
+#' 
+#' @aliases OutputParameterList-class
+#'
+#' @param \dots element or list of the element.
+#'
 #'
 #' @export OutputParameterList
 #' @exportClass OutputParameterList
 OutputParameterList <- setListClass("OutputParameter")
 
 #' ProcessRequirementList
+#' 
+#' @aliases ProcessRequirementList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export ProcessRequirementList
 #' @exportClass ProcessRequirementList
@@ -1044,18 +1093,30 @@ WorkflowStepOutput <- setRefClass("WorkflowStepOutput",
                                   ))
 
 #' WorkflowStepInputList
+#' 
+#' @aliases WorkflowStepInputList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export WorkflowStepInputList
 #' @exportClass WorkflowStepInputList
 WorkflowStepInputList <- setListClass("WorkflowStepInput")
 
 #' WorkflowStepOutputList
+#' 
+#' @aliases WorkflowStepOutputList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export WorkflowStepOutputList
 #' @exportClass WorkflowStepOutputList
 WorkflowStepOutputList <- setListClass("WorkflowStepOutput")
 
 #' WorkflowStepList
+#' 
+#' @aliases WorkflowStepList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export WorkflowStepList
 #' @exportClass WorkflowStepList
@@ -1085,6 +1146,10 @@ WorkflowOutputParameter <-
                 ))
 
 #' WorkflowOutputParameterList
+#'
+#' @aliases WorkflowOutputParameterList-class
+#'
+#' @param \dots element or list of the element.
 #'
 #' @export WorkflowOutputParameterList
 #' @exportClass WorkflowOutputParameterList

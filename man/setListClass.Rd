@@ -17,19 +17,9 @@ setListClass(elementType = NULL, suffix = "List", contains = NULL,
 \item{where}{environment.}
 }
 \value{
-S4 class generator
+S4 class constructor
 }
 \description{
-Take simple approach to extens list class, please note that in IRanges package
-there is more generic List class with utilities.
-}
-\examples{
-\dontrun{
-A <- setClass("A")
-B <- setClass("B", contains = "A")
-C <- setClass("C", contains = "B")
-AList <- setListClass("A")
-AList(list(B(), C()))
-}
+Extends IRanges SimpleList class and return constructor.
 }
 
