@@ -1,0 +1,18 @@
+########################################################################
+## ExpressionTool (fixme)
+########################################################################
+
+#' ExpressionTool Class
+#'
+#' Execute an expression as a process step.
+#'
+#' @field expression (Expression) The expression to execute. The
+#' expression must return a JSON object which matches the output
+#' parameters of the ExpressionTool.
+#'
+#' @export ExpressionTool
+#' @exportClass ExpressionTool
+ExpressionTool <- setRefClass("ExpressionTool", contains = "Process",
+                              fields = list(
+                                  expression = "Expression"
+                              ))

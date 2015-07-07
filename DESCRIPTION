@@ -1,13 +1,13 @@
 Package: cwl
 Type: Package
 Title: R objects for common work flow language representation
-Version: 0.0.5
+Version: 0.0.6
 Date: 2015-06-01
 Author: Tengfei Yin <tengfei.yin@sbgenomics.com>
 Maintainer: Tengfei Yin <tengfei.yin@sbgenomics.com>
 biocViews: Infrastructure, DataRepresentation
 Description: Based on Common Workflow Language Draft2 Just fun project
-	     to get my hands on cwl and creat potential oop ability.
+    to get my hands on cwl and creat potential oop ability.
 License: MIT
 VignetteBuilder: knitr
 Imports:
@@ -17,3 +17,4 @@ Imports:
     S4Vectors
 Suggests:
     knitr
+
