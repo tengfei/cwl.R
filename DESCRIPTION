@@ -9,6 +9,8 @@ biocViews: Infrastructure, DataRepresentation
 Description: Based on Common Workflow Language Draft2, define a set of class in R and provide some utilities to dump to JSON or YAML.
 License: MIT + file LICENSE
 VignetteBuilder: knitr
+URL: http://common-workflow-language.github.io/
+BugReports: https://github.com/tengfei/cwl.R/issues
 Imports:
     methods,
     jsonlite,
