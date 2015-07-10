@@ -181,8 +181,15 @@ WorkflowOutputParameterList <- setListClass("WorkflowOutputParameter", contains 
 Workflow <-
     setRefClass("Workflow", contains = "Process",
                 fields = list(
+                    class = "character",
                     outputs = "WorkflowOutputParameterList", 
                     steps = "WorkflowStepList"
+                ),
+                method = list(
+                    initialize = function(class = "Workflow", ...){
+                        class <<- class
+                        callSuper(...)
+                    }
                 ))
 
 

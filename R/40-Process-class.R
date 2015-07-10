@@ -36,7 +36,7 @@ SchemaList <- setListClass("Schema")
 #'
 #' @export Schema
 #' @exportClass Schema
-Schema <- setRefClass("Schema",
+Schema <- setRefClass("Schema", 
                       fields = list(
                           type = "ANY", # fixme: Datatype | Schema | string
                           fileds = "SchemaList",
@@ -139,7 +139,7 @@ Binding <- setRefClass("Binding",
 #' Parameter(type = "integer", label = "thread",
 #'          description = "Specify the thread #",
 #'          default = 0)
-Parameter <- setRefClass("Parameter",
+Parameter <- setRefClass("Parameter", contains = "CWL",
                          fields = list(
                              type = "ANY", # fixme
                              label = "character",
@@ -227,7 +227,7 @@ ProcessRequirementList <- setListClass("ProcessRequirement")
 #'
 #' @export Process
 #' @exportClass Process
-Process <- setRefClass("Process",
+Process <- setRefClass("Process", contains = "CWL",
                        fields = list(
                            id = "character",
                            inputs = "InputParameterList",

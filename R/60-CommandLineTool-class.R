@@ -228,6 +228,7 @@ setListClass("characterORCommandLineBinding")
 #' @exportClass CommandLineTool 
 CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
                                fields = list(
+                                   class = "character",
                                    baseCommand = "character",
                                    arguments = "characterORCommandLineBindingList",
                                    stdin = "characterORExpression",
@@ -235,6 +236,13 @@ CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
                                    successCodes = "integer",
                                    temporaryFailCodes = "integer",
                                    permanentFailCodes = "integer"
+                               ),
+                               method = list(
+                                   initialize = function(class = "CommandLineTool",
+                                       ...){
+                                       class <<- class
+                                       callSuper(...)
+                                   }
                                ))
 
 #' CommandInputParameter Class

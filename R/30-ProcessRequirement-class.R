@@ -9,9 +9,13 @@
 #' Process.requirements. Process requirements are the primary
 #' mechanism for specifying extensions to the CWL core specification.
 #'
+#' @field (character) The specific requirement type.
+#'
 #' @export ProcessRequirement
 #' @exportClass ProcessRequirement
-ProcessRequirement <- setRefClass("ProcessRequirement", contains = "VIRTUAL")
+ProcessRequirement <- setRefClass("ProcessRequirement",
+                                  contains = c("VIRTUAL", "CWL"),
+                                  field = list(class = "character"))
 
 #' DockerRequirement Class
 #'
@@ -60,6 +64,14 @@ DockerRequirement <- setRefClass("DockerRequirement",
                                      dockerFile = "character",
                                      dockerImageId = "character",
                                      dockerOutputDirectory = "character"
+                                 ),
+                                 method = list(
+                                     initialize = function(
+                                         class = "DockerRequirement",
+                                     ...){
+                                         class <<- class
+                                         callSuper(...)
+                                     }
                                  ))
 
 #' SubworkflowFeatureRequirement Class
@@ -70,7 +82,16 @@ DockerRequirement <- setRefClass("DockerRequirement",
 #' @export SubworkflowFeatureRequirement 
 #' @exportClass SubworkflowFeatureRequirement
 SubworkflowFeatureRequirement <-
-    setRefClass("SubworkflowFeatureRequirement", contains = "ProcessRequirement")
+    setRefClass("SubworkflowFeatureRequirement",
+                contains = "ProcessRequirement",
+                method = list(
+                    initialize = function(
+                        class = "SubworkflowFeatureRequirement",
+                        ...){
+                        class <<- class
+                        callSuper(...)
+                    }                    
+                ))
 
 
 setClassUnion("characterORExpression", c("character", "Expression"))
@@ -127,6 +148,14 @@ CreateFileRequirement <-
     setRefClass("CreateFileRequirement", contains = "ProcessRequirement",
                 fields = list(
                     fileDef = "FileDefList"
+                ),
+                method = list(
+                    initialize = function(
+                        class = "CreateFileRequirement",
+                        ...){
+                        class <<- class
+                        callSuper(...)
+                    }                    
                 ))
 
 #' EnvironmentDef Class
@@ -173,6 +202,14 @@ EnvVarRequirement <-
     setRefClass("EnvVarRequirement", contains = "ProcessRequirement",
                 fields = list(
                     envDef = "EnvironmentDefList"
+                ),
+                method = list(
+                    initialize = function(
+                        class = "EnvVarRequirement",
+                        ...){
+                        class <<- class
+                        callSuper(...)
+                    }                    
                 ))
 
 #' ScatterFeatureRequirement Class
@@ -183,7 +220,15 @@ EnvVarRequirement <-
 #' @export ScatterFeatureRequirement
 #' @exportClass ScatterFeatureRequirement
 ScatterFeatureRequirement <-
-    setRefClass("ScatterFeatureRequirement", contains = "ProcessRequirement")
+    setRefClass("ScatterFeatureRequirement", contains = "ProcessRequirement",
+                method = list(
+                    initialize = function(
+                        class = "ScatterFeatureRequirement",
+                        ...){
+                        class <<- class
+                        callSuper(...)
+                    }                    
+                ))
 
 
 #' ExpressionEngineRequirement Class
@@ -215,6 +260,14 @@ ExpressionEngineRequirement <-
                     requirements = "ProcessRequirement",
                     engineCommand = "character",
                     engineConfig = "character"
+                ),
+                method = list(
+                    initialize = function(
+                        class = "ExpressionEngineRequirement",
+                        ...){
+                        class <<- class
+                        callSuper(...)
+                    }                    
                 ))
 
 

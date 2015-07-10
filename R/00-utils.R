@@ -14,7 +14,10 @@ setListClass <- function(elementType = NULL, suffix = "List",
     name <- paste0(elementType, suffix)
     setClass(name, contains = c("SimpleList", contains), where = where,
              prototype = prototype(elementType = elementType))
-
+    setMethod("show", name, function(object){
+        lapply(object, show)
+    })
+    ## constructor
     function(...){
         listData <- .dotargsAsList(...)
         S4Vectors:::new_SimpleList_from_list(name, listData)
@@ -35,11 +38,9 @@ setListClass <- function(elementType = NULL, suffix = "List",
 }
 
 
-## A <- setClass("A")
-## B <- setClass("B", contains = "A")
-## AList <- setListClass("A")
-## BList <- setListClass("B")
-## AList(A(), B())
+
+
+
 
 
 

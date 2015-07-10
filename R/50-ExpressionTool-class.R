@@ -14,5 +14,14 @@
 #' @exportClass ExpressionTool
 ExpressionTool <- setRefClass("ExpressionTool", contains = "Process",
                               fields = list(
+                                  class = "character", 
                                   expression = "Expression"
+                              ),
+                              method = list(
+                                  initialize = function(
+                                      class = "ExpressionTool",
+                                      ...){
+                                      class <<- class
+                                      callSuper(...)
+                                  }                    
                               ))

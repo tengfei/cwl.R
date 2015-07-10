@@ -60,6 +60,7 @@ FileList <- setListClass("File")
 
 #' File Class 
 #'
+#' @field class (character) Must be File to indicate this object describes a file.
 #' @field path (character) The path to the file.
 #' @field checksum [character] Optional hash code for validating file
 #' integrity. Currently must be in the form "sha1$ + hexidecimal
@@ -78,15 +79,38 @@ FileList <- setListClass("File")
 #' @exportClass File
 #'
 #' @examples
-#' f1 <- new("File")
-#' f2 <- File()
-#' FileList(f1, f2)
-File <- setRefClass("File",
-            fields = list(
-                path = "character",
-                checksum = "character",
-                size = "integer",
-                secondaryFile = "FileList" 
-            ))
+#' library(jsonlite)
+#' library(yaml)
+#' f1 <- File()
+#' f2 <- File(path = "./out.bam", checksum = "test",
+#'            size = 3L, secondaryFile = FileList(File(path = "./out.bai")))
+#' fl <- FileList(f1, f2)
+#' asList(fl)
+#' writeLines(asYAML(fl))
+#' asJSON(fl)
+#' f1
+#' f2
+#' fl
+#' prettify(asJSON(fl))
+#' prettify(asJSON(f1))
+#' prettify(asJSON(f2))
+#' prettify(asJSON(list(list(a = 1, b = 2), list(a = 1, b= 2))))
+File <- setRefClass("File", contains = "CWL",
+                    fields = list(
+                        class = "character",
+                        path = "character",
+                        checksum = "character",
+                        size = "integer",
+                        secondaryFile = "FileList" 
+                    ),
+                    methods = list(
+                        initialize = function(class = "File", ...){
+                            class <<- class
+                            callSuper(...)
+                        }
+                    ))
 
-## Class ANY: exists
+
+
+
+
