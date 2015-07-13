@@ -147,6 +147,8 @@ Binding <- setRefClass("Binding",
 #'
 #' @rdname Parameter
 #'
+#' @return Parameter object
+#'
 #' @examples
 #' Parameter(type = "integer", label = "thread",
 #'          description = "Specify the thread #",
@@ -298,6 +300,8 @@ Process <- setRefClass("Process", contains = "CWL",
 #' @exportClass InputSchema
 #' @rdname Schema
 #' @aliases InputSchema
+#'
+#' @return a Schema object or sbuclass object.
 InputSchema <- setRefClass("InputSchema", contains = "Schema", 
                            fields = list(
                                inputBinding = "Binding"

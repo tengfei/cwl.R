@@ -21,6 +21,9 @@ OutputParameterList(...)
 \arguments{
 \item{\dots}{element or list of the element.}
 }
+\value{
+Parameter object
+}
 \description{
 Define an input or output parameter to a process.
 

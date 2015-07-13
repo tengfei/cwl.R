@@ -10,8 +10,32 @@ output:
       in_header: logo.md
 ---
 
+
 <!--
 %\VignetteIndexEntry{Common Workflow Language R objects and utils}
 %\VignettePackage{cwl}
 %\VignetteEngine{knitr::rmarkdown}
 -->
+
+```{r style, echo = FALSE, results = 'asis'}
+BiocStyle::markdown(css.files = "custom.css")
+```
+
+<!-- override white background for classless code chunks -->
+<style type="text/css" scoped>
+  pre:not([class]) { background-color: #F8F8F8; }
+  pre code { background-color: transparent; }
+</style>
+
+```{r code, echo = FALSE}
+code <- function(...) {
+    cat(paste(..., sep = "\n"))
+}
+
+code2 <- function(...) {
+    cat(paste("```markdown", ..., "\n", "```", sep = "\n"))
+}
+```
+
+# Introduction
+

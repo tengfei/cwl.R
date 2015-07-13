@@ -19,6 +19,8 @@
 #' @export ProcessRequirement
 #' @exportClass ProcessRequirement
 #'
+#' @return a ProcessRequirement object or subclass object.
+#'
 #' @examples
 #' dkr <- DockerRequirement(dockerImageId = "testid")
 #' cfr <- CreateFileRequirement(fileDef =

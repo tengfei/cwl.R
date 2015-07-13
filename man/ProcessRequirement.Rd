@@ -37,6 +37,9 @@ ProcessRequirementList(...)
 \arguments{
 \item{\dots}{element or list of the element.}
 }
+\value{
+a ProcessRequirement object or subclass object.
+}
 \description{
 ProcessRequirement Class
 

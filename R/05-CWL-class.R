@@ -6,6 +6,7 @@
 #' 
 #' @importFrom yaml as.yaml
 #' @importFrom jsonlite toJSON prettify
+#' @importFrom methods showDefault
 #'
 #' @export CWL
 #' @exportClass CWL
@@ -66,13 +67,15 @@ CWL <- setRefClass("CWL",
                                       err <- try(writeLines(toYAML(...)),
                                                  silent = TRUE)
                                       if(inherits(err, "try-error")){
-                                          methods::showDefault(.self)                                                            }
+                                          showDefault(.self)
+                                      }
                                   },
                                   JSON = {
                                       err <- try(jsonlite::prettify(
                                           .self$toJSON(...)), silent = TRUE)
                                       if(inherits(err, "try-error")){
-                                          methods::showDefault(.self)                                                            }
+                                          showDefault(.self)
+                                      }
                                   })
                        }                       
                    ))
@@ -92,6 +95,8 @@ CWL <- setRefClass("CWL",
 #' @export 
 #' @docType methods
 #' @rdname as-methods
+#'
+#' @return a list object or json or yaml file.
 #'
 #' @examples
 #' ## define a S4 object

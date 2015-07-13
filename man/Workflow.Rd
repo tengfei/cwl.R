@@ -15,6 +15,9 @@ WorkflowOutputParameterList(...)
 \arguments{
 \item{\dots}{element or list of the element.}
 }
+\value{
+a Workflow object.
+}
 \description{
 A workflow is a process consisting of one or more steps. Each step
 has input and output parameters defined by the inputs and outputs

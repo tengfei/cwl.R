@@ -52,6 +52,8 @@ setClass("LinkMergeMethod", contains = "VIRTUAL")
 #'
 #' @rdname WorkflowStep
 #' @aliases WorkflowStepInput WorkflowStepInput-class
+#'
+#' @return a WorkflowStep object or subclass object.
 WorkflowStepInput <- setRefClass("WorkflowStepInput",
                                  fields = list(
                                      id = "character",
@@ -104,6 +106,7 @@ WorkflowStepInputList <- setListClass("WorkflowStepInput")
 #' @exportClass WorkflowStepOutputList
 WorkflowStepOutputList <- setListClass("WorkflowStepOutput")
 
+
 #' WorkflowStepList
 #'
 #' @rdname WorkflowStep
@@ -128,6 +131,9 @@ WorkflowStepList <- setListClass("WorkflowStep")
 #'}
 #' @export WorkflowOutputParameter
 #' @exportClass WorkflowOutputParameter
+#'
+#' @return a Workflow object.
+#' 
 #' @rdname Workflow
 #' @aliases WorkflowOutputParameter WorkflowOutputParameter-class
 WorkflowOutputParameter <-
@@ -316,6 +322,8 @@ setClassUnion("CommandLineToolORExpressionToolORWorkflow",
 #'
 #' @export WorkflowStep
 #' @exportClass WorkflowStep
+#' @rdname WorkflowStep
+#' @aliases WorkflowStep WorkflowStep-class
 #'
 #' @examples
 #' ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
@@ -339,11 +347,3 @@ WorkflowStep <-
                     scatterMethod = "ScatterMethod"
                 ))
 
-## need better examples here
-ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
-             description = "align and sort", 
-             inputs = WorkflowStepInputList(
-                 WorkflowStepInput(id = "id1"),
-                 WorkflowStepInput(id = "id2")
-             )))
-Workflow(steps = ws)

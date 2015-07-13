@@ -23,6 +23,9 @@ SchemaDefList(...)
 \arguments{
 \item{\dots}{element or list of the element.}
 }
+\value{
+a Schema object or sbuclass object.
+}
 \description{
 SchemaList
 

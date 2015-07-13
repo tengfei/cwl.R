@@ -33,6 +33,9 @@ asJSON(object, ...)
 
 \item{...}{other parameters passed to as.yaml or toJSON.}
 }
+\value{
+a list object or json or yaml file.
+}
 \description{
 Doesn't like \code{as.list}, only fields and slots are converted,
 prepare a object to be conveted to YAML/JSON.
