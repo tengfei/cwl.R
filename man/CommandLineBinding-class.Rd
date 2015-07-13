@@ -53,4 +53,7 @@ input parameter, the "context" of the expression will be the value
 of the input parameter. When a binding is part of the
 CommandLineTool.arguments field, the valueFrom field is required.}
 }}
+\examples{
+CommandLineBinding(position = 1L, prefix = "-l")
+}
 

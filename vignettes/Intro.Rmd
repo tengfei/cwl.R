@@ -1,12 +1,17 @@
 ---
-title: "R objects for CWL"
-author: "Tengfei Yin"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{R objects for CWL}
-  %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
+title: "Common Workflow Language R objects and utils"
+output:
+  BiocStyle::html_document:
+    toc: true
+    number_sections: true
+    highlight: haddock
+    css: style.css
+    includes:
+      in_header: logo.md
 ---
 
-Coming Soon
+<!--
+%\VignetteIndexEntry{Common Workflow Language R objects and utils}
+%\VignettePackage{cwl}
+%\VignetteEngine{knitr::rmarkdown}
+-->

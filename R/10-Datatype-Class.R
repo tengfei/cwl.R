@@ -17,27 +17,30 @@
 
 
 
-#' PrimitiveEnum
+#' Pre-defiend enums
 #'
-#' Please check \code{cwl:::.CWL.Pritimive}
+#' Please check \code{cwl:::.CWL.Pritimive}, \code{cwl:::.CWL.Complex}. 
 #'
 #' @importFrom objectProperties setSingleEnum
 #' @importClassesFrom S4Vectors SimpleList List
-#' 
+#'
+#' @rdname Enum
 #' @export PrimitiveEnum
+#' @examples
+#' PrimitiveEnum()
+#' PrimitiveEnum("boolean")
+#' ComplexEnum("record")
+#' DatatypeEnum("map")
 PrimitiveEnum <- setSingleEnum("Primitive" , levels = .CWL.Primitive)
 
-#' ComplexEnum
-#'
-#' Please check \code{cwl:::.CWL.Complex}
-#'
-#' @export ComplexEnum
-ComplexEnum <- setSingleEnum("Complex" , levels = .CWL.Primitive)
 
-#' DatatypeEnum
-#'
-#' Primitive + Complex + File
-#'
+#' @rdname Enum
+#' @aliases ComplexEnum
+#' @export ComplexEnum
+ComplexEnum <- setSingleEnum("Complex" , levels = .CWL.Complex)
+
+#' @rdname Enum
+#' @aliases DatatypeEnum
 #' @export DatatypeEnum
 DatatypeEnum <- setSingleEnum("Datatype",
                               levels = c(.CWL.Primitive, .CWL.Complex, "file"))
@@ -51,6 +54,8 @@ DatatypeEnum <- setSingleEnum("Datatype",
 
 #' FileList Class
 #'
+#'
+#' @rdname File-class
 #' @aliases FileList-class
 #' @param \dots element or list of the element.
 #' 
@@ -60,6 +65,7 @@ FileList <- setListClass("File")
 
 #' File Class 
 #'
+#' 
 #' @field class (character) Must be File to indicate this object describes a file.
 #' @field path (character) The path to the file.
 #' @field checksum [character] Optional hash code for validating file
@@ -78,6 +84,7 @@ FileList <- setListClass("File")
 #' @export File
 #' @exportClass File
 #'
+#' @rdname File-class
 #' @examples
 #' library(jsonlite)
 #' library(yaml)
@@ -91,10 +98,6 @@ FileList <- setListClass("File")
 #' f1
 #' f2
 #' fl
-#' prettify(asJSON(fl))
-#' prettify(asJSON(f1))
-#' prettify(asJSON(f2))
-#' prettify(asJSON(list(list(a = 1, b = 2), list(a = 1, b= 2))))
 File <- setRefClass("File", contains = "CWL",
                     fields = list(
                         class = "character",

@@ -12,6 +12,11 @@
 #'
 #' @export ExpressionTool
 #' @exportClass ExpressionTool
+#'
+#' @examples
+#' ExpressionTool(expression =
+#'                   Expression(engine = "cwl:JsonPointer",
+#'                              script = "$job.inputs['threads']"))
 ExpressionTool <- setRefClass("ExpressionTool", contains = "Process",
                               fields = list(
                                   class = "character", 

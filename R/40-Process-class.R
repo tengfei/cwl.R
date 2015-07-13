@@ -15,6 +15,8 @@
 #'
 #' @export SchemaList
 #' @exportClass SchemaList
+#' @rdname Schema
+#' @aliases ScehmaList
 SchemaList <- setListClass("Schema")
 
 #' Schema Class
@@ -23,7 +25,7 @@ SchemaList <- setListClass("Schema")
 #'
 #' @field type (ANY) The data type of this parameter.
 #' 
-#' @field fileds [SchemaList] When type is record, defines the fields of the
+#' @field fields [SchemaList] When type is record, defines the fields of the
 #' record.
 #' 
 #' @field symbols [character] When type is enum, defines the set of valid symbols.
@@ -36,10 +38,14 @@ SchemaList <- setListClass("Schema")
 #'
 #' @export Schema
 #' @exportClass Schema
-Schema <- setRefClass("Schema", 
+#' @rdname Schema
+#' @aliases Schema
+#' @examples
+#' Schema(fields = SchemaList(SchemaDef(name = "schema")))
+Schema <- setRefClass("Schema",  contains = "CWL", 
                       fields = list(
                           type = "ANY", # fixme: Datatype | Schema | string
-                          fileds = "SchemaList",
+                          fields = "SchemaList",
                           symbols = "character",
                           items = "ANY",
                           values = "ANY"
@@ -49,6 +55,8 @@ Schema <- setRefClass("Schema",
 #'
 #' @export SchemaDef
 #' @exportClass SchemaDef
+#' @rdname Schema
+#' @aliases SchemaDef
 SchemaDef <- setRefClass("SchemaDef", contains = "Schema",
                          fields = list(
                              name = "character"
@@ -58,11 +66,10 @@ SchemaDef <- setRefClass("SchemaDef", contains = "Schema",
 #' 
 #' @aliases SchemaDefList-class
 #'
-#' @param \dots element or list of the element.
-#'
-#'
 #' @export SchemaDefList
-#' @exportClass SchemaDefList 
+#' @exportClass SchemaDefList
+#' @rdname Schema
+#' @aliases SchemaDefList
 SchemaDefList <- setListClass("SchemaDef")
 
 setRefClass("SchemaDefRequirement", contains = "ProcessRequirement",
@@ -98,6 +105,9 @@ setRefClass("SchemaDefRequirement", contains = "ProcessRequirement",
 #'
 #' @export Binding
 #' @exportClass Binding
+#' @rdname Binding
+#' @examples
+#' Binding(loadContents = TRUE, secondaryFiles = "./test.txt")
 Binding <- setRefClass("Binding",
                        fields = list(
                            loadContents = "logical",
@@ -135,10 +145,29 @@ Binding <- setRefClass("Binding",
 #' @export Parameter
 #' @exportClass Parameter
 #'
+#' @rdname Parameter
+#'
 #' @examples
 #' Parameter(type = "integer", label = "thread",
 #'          description = "Specify the thread #",
 #'          default = 0)
+#' 
+#' ipl <- InputParameterList(
+#'     InputParameter(id = "BAM", type = "File",
+#'                    label = "input bam",
+#'                    description = "input bam",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 1L
+#'                    )),
+#'     InputParameter(id = "level", type = "Integer",
+#'                    label = "Compression level",
+#'                    description = "Compression level",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 2L,
+#'                        prefix = "-l"
+#'                    ))    
+#' )
+#' ipl
 Parameter <- setRefClass("Parameter", contains = "CWL",
                          fields = list(
                              type = "ANY", # fixme
@@ -154,36 +183,35 @@ Parameter <- setRefClass("Parameter", contains = "CWL",
                              }
                          ))
 
+
 #' InputParameterList
 #' 
-#' @aliases InputParameterList-class
+#' @aliases InputParameterList InputParameterList-class
 #'
 #' @param \dots element or list of the element.
 #'
 #'
 #' @export InputParameterList
 #' @exportClass InputParameterList
+#' @rdname Parameter
 InputParameterList <- setListClass("InputParameter")
 
 #' OutputParameterList
 #' 
-#' @aliases OutputParameterList-class
-#'
-#' @param \dots element or list of the element.
-#'
+#' @aliases OutputParameterList OutputParameterList-class
 #'
 #' @export OutputParameterList
 #' @exportClass OutputParameterList
+#' @rdname Parameter
 OutputParameterList <- setListClass("OutputParameter")
 
 #' ProcessRequirementList
 #' 
 #' @aliases ProcessRequirementList-class
 #'
-#' @param \dots element or list of the element.
-#'
 #' @export ProcessRequirementList
 #' @exportClass ProcessRequirementList
+#' @rdname ProcessRequirement
 ProcessRequirementList <- setListClass("ProcessRequirement")
 
 #' Process Class
@@ -227,6 +255,27 @@ ProcessRequirementList <- setListClass("ProcessRequirement")
 #'
 #' @export Process
 #' @exportClass Process
+#'
+#' @rdname Process
+#' @examples
+#' ipl <- InputParameterList(
+#'     InputParameter(id = "BAM", type = "File",
+#'                    label = "input bam",
+#'                    description = "input bam",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 1L
+#'                    )),
+#'     InputParameter(id = "level", type = "Integer",
+#'                    label = "Compression level",
+#'                    description = "Compression level",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 2L,
+#'                        prefix = "-l"
+#'                    ))    
+#' )
+#' ipl
+#' p <- Process(id = "process", inputs = ipl)
+#' p
 Process <- setRefClass("Process", contains = "CWL",
                        fields = list(
                            id = "character",
@@ -247,6 +296,8 @@ Process <- setRefClass("Process", contains = "CWL",
 #'
 #' @export InputSchema
 #' @exportClass InputSchema
+#' @rdname Schema
+#' @aliases InputSchema
 InputSchema <- setRefClass("InputSchema", contains = "Schema", 
                            fields = list(
                                inputBinding = "Binding"
@@ -256,6 +307,8 @@ InputSchema <- setRefClass("InputSchema", contains = "Schema",
 #'
 #' @export OutputSchema
 #' @exportClass OutputSchema
+#' @rdname Schema
+#' @aliases OutputSchema
 OutputSchema <- setRefClass("OutputSchema", contains = "Schema")
 
 
@@ -268,7 +321,9 @@ OutputSchema <- setRefClass("OutputSchema", contains = "Schema")
 #' as command line parameters.
 #'
 #' @export InputParameter
-#' @exportClass InputParameter 
+#' @exportClass InputParameter
+#' @rdname Parameter
+#' @aliases InputParameter InputParameter-class
 InputParameter <- setRefClass("InputParameter", contains = "Parameter",
                               fields = list(
                                   id = "character",
@@ -281,6 +336,8 @@ InputParameter <- setRefClass("InputParameter", contains = "Parameter",
 #'
 #' @export OutputParameter
 #' @exportClass OutputParameter
+#' @rdname Parameter
+#' @aliases OutputParameter OutputParameter-class
 OutputParameter <- setRefClass("OutputParameter", contains = "Parameter",
                                fields = list(
                                    id = "character"

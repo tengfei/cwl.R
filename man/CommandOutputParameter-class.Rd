@@ -15,4 +15,7 @@ CommandOutputParameter Class
 the concrete outputs of a process step (such as files created by a
 program) and describe them in the process output parameter.}
 }}
+\examples{
+CommandOutputParameter(outputBinding = CommandOutputBinding(glob = "*.bam"))
+}
 

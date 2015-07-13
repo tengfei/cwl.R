@@ -21,4 +21,7 @@ to use.}
 \item{\code{script}}{(character) The code to be executed by the expression
 engine.}
 }}
+\examples{
+Expression(engine = "cwl:JsonPointer", script = "$job.inputs['threads']")
+}
 

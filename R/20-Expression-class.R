@@ -19,9 +19,13 @@ setClassUnion("JsonPointerORcharacter", c("JsonPointer", "character"))
 #'
 #' @export Expression
 #' @exportClass Expression
+#'
+#' @examples
+#' Expression(engine = "cwl:JsonPointer", script = "$job.inputs['threads']")
 Expression <- setRefClass("Expression",
                           contains = "CWL",
                           fields = list(
                               engine = "JsonPointerORcharacter",
                               script = "character"
                           ))
+

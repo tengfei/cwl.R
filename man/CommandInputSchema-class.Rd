@@ -8,4 +8,7 @@
 \description{
 CommandInputSchema Class
 }
+\examples{
+CommandInputSchema()
+}
 

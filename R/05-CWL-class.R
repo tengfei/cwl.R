@@ -1,13 +1,18 @@
 #' Class CWL
 #'
-#' Define CWL class and generic methods
+#' Define CWL class and generic methods, no fields defeind.
 #'
 #' @aliases CWL-class
 #' 
-#' @importFrom jsonlite toJSON
+#' @importFrom yaml as.yaml
+#' @importFrom jsonlite toJSON prettify
 #'
 #' @export CWL
 #' @exportClass CWL
+#'
+#' @examples
+#' ## no fields, only to provide methods to be extended
+#' x <- CWL()
 CWL <- setRefClass("CWL",
                    methods = list(
                        getFields = function(values) {
@@ -37,7 +42,15 @@ CWL <- setRefClass("CWL",
                        toYAML = function(...){
                            'Covert object to YAML'
                            l <- .self$toList()
-                           as.yaml(l, ...)
+                           ## try to convert 
+                           ## err <- try(yaml::as.yaml(l, ...),
+                           ##            silent = TRUE)
+                           ## if(inherits(err, "try-error"){
+                           ##     warning("toYAML not implemented for class",
+                           ##             class(.self))
+                           ## })
+                           yaml::as.yaml(l, ...)
+
                        },
                        toJSON = function(...){
                            'Covert object to JSON'
@@ -50,10 +63,16 @@ CWL <- setRefClass("CWL",
                            format <- match.arg(format)
                            switch(format,
                                   YAML = {
-                                      writeLines(toYAML(...))
+                                      err <- try(writeLines(toYAML(...)),
+                                                 silent = TRUE)
+                                      if(inherits(err, "try-error")){
+                                          methods::showDefault(.self)                                                            }
                                   },
                                   JSON = {
-                                      prettify(.self$toJSON(...))
+                                      err <- try(jsonlite::prettify(
+                                          .self$toJSON(...)), silent = TRUE)
+                                      if(inherits(err, "try-error")){
+                                          methods::showDefault(.self)                                                            }
                                   })
                        }                       
                    ))
@@ -62,20 +81,49 @@ CWL <- setRefClass("CWL",
 
 
 
-#' Convert a object slots/fields to a list
+#' Convert a object slots/fields to a list, json, yaml file
 #'
 #' Doesn't like \code{as.list}, only fields and slots are converted,
 #' prepare a object to be conveted to YAML/JSON.
 #'
 #' @param object object, could be S4/R5 object, for example, class CWL, SimpleList. 
-#' @param ... other parameters passed
+#' @param ... other parameters passed to as.yaml or toJSON.
 #'
 #' @export 
 #' @docType methods
-#' @rdname asList-methods
+#' @rdname as-methods
+#'
+#' @examples
+#' ## define a S4 object
+#' A <- setClass("A", slots = list(a = "character", b = "numeric"))
+#' ## define a reference object which extends 'CWL' class
+#' B <- setRefClass("B", fields = list(x = "character", y = "A"), contains = "CWL")
+#' ## new instances
+#' a <- A(a = "hello", b = 123)
+#' b <- B(x = "world", y = a)
+#' 
+#' ## show
+#' b
+#' b$show("JSON")
+#' b$show("YAML")
+#' 
+#' ## You can convert slots/fields into a list
+#' asList(a)
+#' asList(b)
+#' b$toList()
+#' 
+#' ##asYAML
+#' asYAML(a)
+#' asYAML(b)
+#' b$toYAML()
+#' 
+#' ##asJSON
+#' asJSON(a)
+#' asJSON(b)
+#' b$toJSON()
 setGeneric("asList", function(object, ...) standardGeneric("asList"))
 
-#' @rdname asList-methods
+#' @rdname as-methods
 #' @aliases asList,ANY-method
 setMethod("asList", "ANY", function(object, ...){
     if(isS4(object)){
@@ -90,6 +138,8 @@ setMethod("asList", "ANY", function(object, ...){
     return(res)
 })
 
+
+
 getFields <- function(x, values){
     .nms <- slotNames(x)
     if (!missing(values))
@@ -101,13 +151,13 @@ getFields <- function(x, values){
     res
 }
 
-#' @rdname asList-methods
+#' @rdname as-methods
 #' @aliases asList,CWL-method
 setMethod("asList", "CWL", function(object, ...){
     object$toList(...)
 })
 
-#' @rdname asList-methods
+#' @rdname as-methods
 #' @aliases asList,SimpleList-method
 setMethod("asList", "SimpleList", function(object, ...){
     if(length(object)){
@@ -118,35 +168,26 @@ setMethod("asList", "SimpleList", function(object, ...){
     res
 })
 
-#' Convert a object slots/fields to a YAML
-#'
-#' @param object object, could be S4/R5 object, for example, class CWL, SimpleList. 
-#' @param ... other parameters passed to \code{as.yaml}
-#'
-#' @export 
 #' @docType methods
-#' @rdname asYAML-methods
+#' @export asYAML
+#' @rdname as-methods
+#' @aliases asYAML
 setGeneric("asYAML", function(object, ...) standardGeneric("asYAML"))
 
 
-#' @rdname asYAML-methods
+#' @rdname as-methods
 #' @aliases asYAML,ANY-method
-#' @importFrom yaml as.yaml
 setMethod("asYAML", "ANY", function(object, ...){
     as.yaml(asList(object), ...)
 })
 
-#' Convert a object slots/fields to a JSON
-#'
-#' @param object object, could be S4/R5 object, for example, class CWL, SimpleList. 
-#' @param ... other parameters passed to \code{toJSON}
-#'
-#' @export 
 #' @docType methods
-#' @rdname asJSON-methods
+#' @export asJSON
+#' @aliases asJSON
+#' @rdname as-methods
 setGeneric("asJSON", function(object, ...) standardGeneric("asJSON"))
 
-#' @rdname asJSON-methods
+#' @rdname as-methods
 #' @aliases asJSON,ANY-method
 setMethod("asJSON", "ANY", function(object, ...){
     jsonlite::toJSON(asList(object), ...)

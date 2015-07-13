@@ -6,7 +6,7 @@
 \alias{CWL-class}
 \title{Class CWL}
 \description{
-Define CWL class and generic methods
+Define CWL class and generic methods, no fields defeind.
 }
 \section{Methods}{
 
@@ -20,4 +20,8 @@ Define CWL class and generic methods
 
 \item{\code{toYAML(...)}}{Covert object to YAML}
 }}
+\examples{
+## no fields, only to provide methods to be extended
+x <- CWL()
+}
 

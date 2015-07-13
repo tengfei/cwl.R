@@ -27,4 +27,7 @@ from the path (the last period . and all following characters). If
 there are no file extensions, the path is unchanged.  Append the
 remainder of the string to the end of the file path.}
 }}
+\examples{
+Binding(loadContents = TRUE, secondaryFiles = "./test.txt")
+}
 

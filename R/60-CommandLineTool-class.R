@@ -49,7 +49,11 @@
 #'
 #' @export CommandLineBinding
 #' @exportClass CommandLineBinding
-CommandLineBinding <- setRefClass("CommandLineBinding", contains = "Binding",
+#'
+#' @examples
+#' CommandLineBinding(position = 1L, prefix = "-l")
+CommandLineBinding <- setRefClass("CommandLineBinding",
+                                  contains = c("Binding", "CWL"),
                                   fields = list(
                                       position = "integer",
                                       prefix = "character",
@@ -57,6 +61,7 @@ CommandLineBinding <- setRefClass("CommandLineBinding", contains = "Binding",
                                       itemSeparator = "character",
                                       valueFrom = "characterORExpression"
                                   ))
+
 
 
 setClassUnion("characterORCommandLineBinding",
@@ -225,7 +230,26 @@ setListClass("characterORCommandLineBinding")
 #' expected to always fail.
 #'
 #' @export CommandLineTool
-#' @exportClass CommandLineTool 
+#' @exportClass CommandLineTool
+#'
+#' @examples
+#' ipl <- InputParameterList(
+#'     InputParameter(id = "BAM", type = "File",
+#'                    label = "input bam",
+#'                    description = "input bam",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 1L
+#'                    )),
+#'     InputParameter(id = "level", type = "Integer",
+#'                    label = "Compression level",
+#'                    description = "Compression level",
+#'                    inputBinding = CommandLineBinding(
+#'                        position = 2L,
+#'                        prefix = "-l"
+#'                    ))    
+#' )
+#' 
+#' clt <- CommandLineTool(inputs = ipl, baseCommand = "samtools sort")
 CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
                                fields = list(
                                    class = "character",
@@ -245,20 +269,43 @@ CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
                                    }
                                ))
 
+
 #' CommandInputParameter Class
 #'
 #' An input parameter for a CommandLineTool.
 #'
 #' @export CommandInputParameter
 #' @exportClass CommandInputParameter
+#'
+#' @examples
+#' ipl <- InputParameterList(
+#'     CommandInputParameter(id = "BAM", type = "File",
+#'                           label = "input bam",
+#'                           description = "input bam",
+#'                           inputBinding = CommandLineBinding(
+#'                               position = 1L
+#'                           )),
+#'     CommandInputParameter(id = "level", type = "Integer",
+#'                           label = "Compression level",
+#'                           description = "Compression level",
+#'                           inputBinding = CommandLineBinding(
+#'                               position = 2L,
+#'                               prefix = "-l"
+#'                           ))    
+#' )
 CommandInputParameter <-
     setRefClass("CommandInputParameter", contains = "InputParameter")
+
+ 
+
 
 
 #' CommandInputSchema Class
 #'
 #' @export CommandInputSchema
 #' @exportClass CommandInputSchema
+#' @examples
+#' CommandInputSchema()
 CommandInputSchema <-
     setRefClass("CommandInputSchema", contains = "InputSchema")
 
@@ -283,6 +330,9 @@ CommandInputSchema <-
 #'
 #' @export CommandOutputBinding
 #' @exportClass CommandOutputBinding
+#'
+#' @examples
+#' CommandOutputBinding(glob = "*.bam")
 CommandOutputBinding <-
     setRefClass("CommandOutputBinding", contains = "Binding",
                 fields = list(
@@ -298,6 +348,9 @@ CommandOutputBinding <-
 #'
 #' @export CommandOutputSchema
 #' @exportClass CommandOutputSchema
+#'
+#' @examples
+#' CommandOutputSchema()
 CommandOutputSchema <-
     setRefClass("CommandOutputSchema", contains = "Schema", 
                 fields = list(
@@ -313,6 +366,9 @@ CommandOutputSchema <-
 #'
 #' @export CommandOutputParameter
 #' @exportClass CommandOutputParameter
+#'
+#' @examples
+#' CommandOutputParameter(outputBinding = CommandOutputBinding(glob = "*.bam"))
 CommandOutputParameter <-
     setRefClass("CommandOutputParameter", contains = "OutputParameter",
                 fields = list(

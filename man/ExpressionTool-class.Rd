@@ -15,4 +15,9 @@ Execute an expression as a process step.
 expression must return a JSON object which matches the output
 parameters of the ExpressionTool.}
 }}
+\examples{
+ExpressionTool(expression =
+                  Expression(engine = "cwl:JsonPointer",
+                             script = "$job.inputs['threads']"))
+}
 

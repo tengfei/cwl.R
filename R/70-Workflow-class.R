@@ -6,22 +6,18 @@
 
 setClass("LinkMergeMethod", contains = "VIRTUAL")
 
-#' WorkflowStepInput Class
-#'
+#' @section WorkflowStepInput Class:
+#' \describe{
 #'
 #' The input of a workflow step connects an upstream parameter (from
 #' the workflow inputs, or the outputs of other workflows steps) with
 #' the input parameters of the underlying process.
 #'
-#' @section details:
-#'
-#' If the sink parameter is an array, or named in a workflow scatter
+#' #' If the sink parameter is an array, or named in a workflow scatter
 #' operation, there may be multiple inbound data links listed in the
 #' connect field. The values from the input links are merged depending
 #' on the method specified in the linkMerge field. If not specified,
 #' the default method is merge_nested:
-#'
-#' \itemize{
 #'
 #' \item{merge_nested}{ The input shall be an array consisting of
 #' exactly one entry for each input link. If merge_nested is specified
@@ -33,24 +29,29 @@ setClass("LinkMergeMethod", contains = "VIRTUAL")
 #' element from the "items" type of the destination array
 #' parameter. 2) Source parameters which are arrays are concatenated;
 #' source parameters which are single element types are appended as
-#' single elements.  } }
+#' single elements.  } 
 #'
+#' Fields:
+#' 
+#' \item{\code{id}}{ (character) A unique identifier for this workflow input
+#' parameter.}
 #'
-#' @field id (character) A unique identifier for this workflow input
-#' parameter.
+#' \item{\code{source}}{[character] Specifies one or more workflow parameters
+#' that will provide input to the underlying process parameter.}
 #'
-#' @field source [character] Specifies one or more workflow parameters
-#' that will provide input to the underlying process parameter.
-#'
-#' @field linkMerge [LineMergeMethod] The method to use to merge
+#' \item{\code{linkMerge}}{[LineMergeMethod] The method to use to merge
 #' multiple inbound links into a single array. If not specified, the
-#' default method is merge_nested:
+#' default method is merge_nested:}
 #'
-#' @field default [ANY] The default value for this parameter if there
-#' is no source field.
+#' \item{\code{default}}{ [ANY] The default value for this parameter if there
+#' is no source field.}
+#' }
 #' 
 #' @export WorkflowStepInput
 #' @exportClass WorkflowStepInput
+#'
+#' @rdname WorkflowStep
+#' @aliases WorkflowStepInput WorkflowStepInput-class
 WorkflowStepInput <- setRefClass("WorkflowStepInput",
                                  fields = list(
                                      id = "character",
@@ -59,38 +60,43 @@ WorkflowStepInput <- setRefClass("WorkflowStepInput",
                                      default = "ANY"
                                  ))
 
-#' WorkflowStepOutput Class
-#'
+#' @section WorkflowStepOutput Class:
+#' \describe{
+#' 
 #' Associate an output parameter of the underlying process with a
 #' workflow parameter. The workflow parameter (given in the id field)
 #' be may be used as a source to connect with input parameters of
 #' other workflow steps, or with an output parameter of the process.
 #'
-#' @field id (character) A unique identifier for this workflow output
+#' \item{\code{id}}{ (character) A unique identifier for this workflow output
 #' parameter. This is the identifier to use in the source field of
 #' WorkflowStepInput to connect the output value to downstream
-#' parameters.
+#' parameters.}
+#'
+#' }
 #'
 #' @export WorkflowStepOutput
 #' @exportClass WorkflowStepOutput
+#' @rdname WorkflowStep
+#' @aliases WorkflowStepOutput WorkflowStepOutput-class
 WorkflowStepOutput <- setRefClass("WorkflowStepOutput",
                                   fields = list(
                                       id = "character"
                                   ))
 
 #' WorkflowStepInputList
-#' 
-#' @aliases WorkflowStepInputList-class
 #'
-#' @param \dots element or list of the element.
+#' @rdname WorkflowStep
+#' @aliases WorkflowStepInputList WorkflowStepInputList-class
 #'
 #' @export WorkflowStepInputList
 #' @exportClass WorkflowStepInputList
 WorkflowStepInputList <- setListClass("WorkflowStepInput")
 
 #' WorkflowStepOutputList
-#' 
-#' @aliases WorkflowStepOutputList-class
+#'
+#' @rdname WorkflowStep
+#' @aliases WorkflowStepOutputList WorkflowStepOutputList-class
 #'
 #' @param \dots element or list of the element.
 #'
@@ -99,31 +105,31 @@ WorkflowStepInputList <- setListClass("WorkflowStepInput")
 WorkflowStepOutputList <- setListClass("WorkflowStepOutput")
 
 #' WorkflowStepList
-#' 
-#' @aliases WorkflowStepList-class
 #'
-#' @param \dots element or list of the element.
-#'
+#' @rdname WorkflowStep
+#' @aliases WorkflowStepList-class WorkflowStepList
 #' @export WorkflowStepList
 #' @exportClass WorkflowStepList
 WorkflowStepList <- setListClass("WorkflowStep")
 
 
-#' WorkflowOutputParameter Class
-#'
+#' @section WorkflowOutputParameter Class:
+#' \describe{
 #' Describe an output parameter of a workflow. The parameter must be
 #' connected to one or more parameters defined in the workflow that
 #' will provide the value of the output parameter.
 #'
-#' @field source [character] Specifies one or more workflow parameters
-#' that will provide this output value.
+#' \item{\code{source}}{ [character] Specifies one or more workflow parameters
+#' that will provide this output value.}
 #'
-#' @field linkMerge [LinkMergeMethod] The method to use to merge
+#' \item{\code{linkMerge}}{ [LinkMergeMethod] The method to use to merge
 #' multiple inbound links into a single array. If not specified, the
-#' default method is merge_nested:
-#'
+#' default method is merge_nested:}
+#'}
 #' @export WorkflowOutputParameter
 #' @exportClass WorkflowOutputParameter
+#' @rdname Workflow
+#' @aliases WorkflowOutputParameter WorkflowOutputParameter-class
 WorkflowOutputParameter <-
     setRefClass("WorkflowOutputParameter", contains = "OutputParameter",
                 fields = list(
@@ -131,14 +137,14 @@ WorkflowOutputParameter <-
                     linkMerge = "LinkMergeMethod"
                 ))
 
-#' WorkflowOutputParameterList
-#'
 #' @aliases WorkflowOutputParameterList-class
 #'
 #' @param \dots element or list of the element.
 #'
 #' @export WorkflowOutputParameterList
 #' @exportClass WorkflowOutputParameterList
+#'
+#' @rdname Workflow
 WorkflowOutputParameterList <- setListClass("WorkflowOutputParameter", contains = "OutputParameterList")
 
 
@@ -178,6 +184,17 @@ WorkflowOutputParameterList <- setListClass("WorkflowOutputParameter", contains 
 #'
 #' @export Workflow
 #' @exportClass Workflow
+#'
+#' @rdname Workflow
+#' @examples
+#' ## need better examples here
+#' ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
+#'              description = "align and sort", 
+#'              inputs = WorkflowStepInputList(
+#'                  WorkflowStepInput(id = "id1"),
+#'                  WorkflowStepInput(id = "id2")
+#'              )))
+#' Workflow(steps = ws)
 Workflow <-
     setRefClass("Workflow", contains = "Process",
                 fields = list(
@@ -299,8 +316,16 @@ setClassUnion("CommandLineToolORExpressionToolORWorkflow",
 #'
 #' @export WorkflowStep
 #' @exportClass WorkflowStep
+#'
+#' @examples
+#' ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
+#'              description = "align and sort", 
+#'              inputs = WorkflowStepInputList(
+#'                  WorkflowStepInput(id = "id1"),
+#'                  WorkflowStepInput(id = "id2")
+#'              )))
 WorkflowStep <-
-    setRefClass("WorkflowStep",
+    setRefClass("WorkflowStep", contains = "CWL", 
                 fields = list(
                     id = "character",
                     inputs = "WorkflowStepInputList",
@@ -313,3 +338,12 @@ WorkflowStep <-
                     scatter = "character",
                     scatterMethod = "ScatterMethod"
                 ))
+
+## need better examples here
+ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
+             description = "align and sort", 
+             inputs = WorkflowStepInputList(
+                 WorkflowStepInput(id = "id1"),
+                 WorkflowStepInput(id = "id2")
+             )))
+Workflow(steps = ws)

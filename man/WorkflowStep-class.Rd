@@ -106,4 +106,12 @@ To specify a nested workflow as part of a workflow step,
 SubworkflowFeatureRequirement must be specified in the workflow or
 workflow step requirements.
 }
+\examples{
+ws <- WorkflowStepList(WorkflowStep(id = "step1", label = "align-and-sort",
+             description = "align and sort",
+             inputs = WorkflowStepInputList(
+                 WorkflowStepInput(id = "id1"),
+                 WorkflowStepInput(id = "id2")
+             )))
+}
 

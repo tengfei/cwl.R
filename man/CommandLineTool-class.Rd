@@ -174,4 +174,23 @@ listed in outputs and applying output bindings to the tool
 output. Output bindings are associated with output parameters using
 the outputBinding field. See CommandOutputBinding for details.
 }
+\examples{
+ipl <- InputParameterList(
+    InputParameter(id = "BAM", type = "File",
+                   label = "input bam",
+                   description = "input bam",
+                   inputBinding = CommandLineBinding(
+                       position = 1L
+                   )),
+    InputParameter(id = "level", type = "Integer",
+                   label = "Compression level",
+                   description = "Compression level",
+                   inputBinding = CommandLineBinding(
+                       position = 2L,
+                       prefix = "-l"
+                   ))
+)
+
+clt <- CommandLineTool(inputs = ipl, baseCommand = "samtools sort")
+}
 
