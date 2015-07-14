@@ -1,5 +1,5 @@
 ---
-title: "Common Workflow Language R objects and utils"
+title: "Common Workflow Language R"
 output:
   BiocStyle::html_document:
     toc: true
@@ -12,7 +12,7 @@ output:
 
 
 <!--
-%\VignetteIndexEntry{Common Workflow Language R objects and utils}
+%\VignetteIndexEntry{Common Workflow Language R}
 %\VignettePackage{cwl}
 %\VignetteEngine{knitr::rmarkdown}
 -->
@@ -38,4 +38,148 @@ code2 <- function(...) {
 ```
 
 # Introduction
+[Common workflow languange](https://github.com/common-workflow-language/common-workflow-language) is a community wise effor to create specifications that enable reproducible, portable data analysis flow. This R package is based on [draf2](http://common-workflow-language.github.io/draft-2/), full details are described in the website. 
+
+This package provides an R interface to create JSON/YAML file to be used in other implementation, for example, [rabix](https://www.rabix.org/) provides very handy interface to desctibe your tool and flow with graphical editor to make development so much easier, it also has local executor as well. 
+
+# Class
+This package defines a set of S4/Reference class that represent data model and tool/flow model specified in draft2, in order to enable object-oriented programming in R. Identical class name and fields names in the CWL specification are used, and manuals are directly copied to each class to make reference checking more easier.
+
+The top class is *CWL* class, it comes with soeme utility function that convert the object into list, JSON, YAML. 
+
+
+## Constructor
+To construct the object, you can simply check out the class name (same as the generator name) in the terminal or check its manual to see what fields it need.
+
+```{r}
+library(cwl)
+InputParameter
+```
+Then construct it with the constructor directly
+
+```{r}
+ip <- InputParameter(id = "bam", type = "File", streamable = TRUE, 
+               label = "Bam fles", default = "./test.bam")
+```
+
+## Methods
+### show method
+The first thing you need to pay attention to is that, *show* method is overrided, by default it output YAML which is easier to read. It automatically parse it recurdively. 
+
+```{r}
+ip #same as ip$show()
+```
+You can also show it as JSON
+
+```{r}
+ip$show("JSON") #same as ip$show()
+```
+
+The default can always be called
+```{r}
+showDefault(ip)
+```
+### Convert to list
+This packaeg defines a S4 method called `asList`, you can use it for any object, and it's different from `as.list`. `asList` automatically parse any object recursively to turn S4, R5 reference object or simple object into a list, it only parses the fields or slots in the object. 
+
+```{r}
+A <- setClass("A", slots = list(x = "character", y = "numeric"))
+a <- A(x = "a", y = 3)
+## cannot run as.list(a)
+asList(a)
+asList(ip) # same as ip$toList()
+```
+
+And *CWL* class extends to almost all classes defined in this pacakge, so they all comes with the method `obj$toList()`
+
+### Convert to YAML
+
+To convert an object into YAML is also as easy as list, just use S4 method `asYAML` for any object or `obj$toYAML()` for *CWL* extended object. 
+
+```{r}
+ip$toYAML()
+```
+
+### Convert to JSON
+
+To convert an object into JSON is also as easy as list, just use S4 method `asYAML` for any object or `obj$toJSON()` for *CWL* extended object. 
+
+```{r}
+ip$toJSON()
+ip$toJSON(pretty = TRUE)
+```
+
+# A CommandLineTool example
+Here I let's work through an example for a command line 
+
+```
+samtools sort -o output.bam -l 1
+```
+
+And let's expose the `-l -o` interface into the CWL object. 
+
+Define input parameteres list
+
+```{r}
+## long form
+ipl <- InputParameterList(
+    InputParameter(id = "bam",
+                   type = "File",
+                   label = "Bam file",
+                   description = "Input bam file",
+                   inputBinding = CommandLineBinding(
+                       position = 1L,
+                       separate = TRUE
+                   )),
+    InputParameter(id = "level",
+                   type = "Integer",
+                   label = "Compression Level",
+                   description = "Set compression level, from 0 (uncompressed) to 9 (best)",
+                   inputBinding = CommandLineBinding(
+                       position = 2L
+                   )),
+    InputParameter(id = "prefix",
+                   type = "String",
+                   label = "Prefix",
+                   description = "Write temporary files to PREFIX.nnnn.bam",
+                   inputBinding = CommandLineBinding(
+                       position = 3L
+                   ))
+)
+
+```
+
+Define output parameter list
+
+```{r}
+opl <- OutputParameterList(
+    CommandOutputParameter(
+        id = "sorted",
+        type = "File",
+        outputBinding = CommandOutputBinding(
+            glob = "*.bam"
+        )
+    )
+)
+```
+
+Wrap them into CommandLineTool object
+
+```{r}
+cwl <- CommandLineTool(id = "samtools-sort",
+                label = "Samtools sort subcommand",
+                description = "Samtools sort: sort bam into sorted bam : )",
+                baseCommand = "samtools sort",
+                arguments = "out.bam",
+                inputs = ipl,
+                outputs = opl)
+```
+
+Let's see it in JSON
+
+```{r}
+cwl$toJSON(pretty = TRUE)
+```
+
+Rabix package extends this package, with it's own specific specs, and has shorthands and an easier interface to describe tools. And the web interface allow you to create/describe tools/workflows much more easier. You can also simply import an JSON file to the interface. Please check the *rabix* package for more details. 
 
