@@ -60,6 +60,13 @@ WorkflowStepInput <- setRefClass("WorkflowStepInput",
                                      source = "character",
                                      linkMerge = "LinkMergeMethod",
                                      default = "ANY"
+                                 ),
+                                 methods = list(
+                                     initialize = function(id = "", ...){
+                                         id <<- addIdNum(id)
+                                         callSuper(...)
+                                     }
+
                                  ))
 
 #' @section WorkflowStepOutput Class:
@@ -84,6 +91,13 @@ WorkflowStepInput <- setRefClass("WorkflowStepInput",
 WorkflowStepOutput <- setRefClass("WorkflowStepOutput",
                                   fields = list(
                                       id = "character"
+                                  ),
+                                  methods = list(
+                                      initialize = function(id = "", ...){
+                                          id <<- addIdNum(id)
+                                          callSuper(...)
+                                      }
+
                                   ))
 
 #' WorkflowStepInputList
@@ -345,5 +359,11 @@ WorkflowStep <-
                     run = "CommandLineToolORExpressionToolORWorkflow",
                     scatter = "character",
                     scatterMethod = "ScatterMethod"
+                ),
+                methods = list(
+                    initialize = function(id = "", ...){
+                        id <<- addIdNum(id)
+                        callSuper(...)
+                    }
                 ))
 

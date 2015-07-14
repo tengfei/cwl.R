@@ -26,6 +26,7 @@
 #'
 #' @rdname Enum
 #' @export PrimitiveEnum
+#' @exportClass PrimitiveSingleEnum
 #' @examples
 #' PrimitiveEnum()
 #' PrimitiveEnum("boolean")
@@ -37,14 +38,20 @@ PrimitiveEnum <- setSingleEnum("Primitive" , levels = .CWL.Primitive)
 #' @rdname Enum
 #' @aliases ComplexEnum
 #' @export ComplexEnum
+#' @exportClass ComplexSingleEnum
 ComplexEnum <- setSingleEnum("Complex" , levels = .CWL.Complex)
 
 #' @rdname Enum
 #' @aliases DatatypeEnum
 #' @export DatatypeEnum
+#' @exportClass DatatypeSingleEnum
 DatatypeEnum <- setSingleEnum("Datatype",
                               levels = c(.CWL.Primitive, .CWL.Complex, "file"))
 
+
+
+setClassUnion("DSC",
+                c("DatatypeSingleEnum", "Schema", "character"))
 
 
 

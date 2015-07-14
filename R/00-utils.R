@@ -39,8 +39,59 @@ setListClass <- function(elementType = NULL, suffix = "List",
 
 
 
+deType <- function(x){
+    ## string
+    str_type <- c('STRING', 'STR', '<string>', '<str>', 'str', "character",
+                  "string", "String")
+    ## int
+    int_type <- c('INTEGER', 'INT', '<integer>', '<int>', 'int',
+                  "integer", "Integer")
+    ## float
+    float_type <- c('FLOAT', '<float>', 'float', 'Float')
+    ## File
+    file_type <- c('FILE', '<file>', 'File', 'file')
+    ## enum
+    enum_type <- c('ENUM', '<enum>', 'enum', "Enum")
+
+    res <- ""
+    
+    if(x %in% str_type){
+        res <- "string"
+    }
+
+    if(x %in% int_type){
+        res <- "int"
+    }
+    if(x %in% float_type){
+        res <- "float"
+    }
+    if(x %in% file_type){
+        res <- "File"
+    }
+    if(x %in% enum_type){
+        res <- "enum"
+    }
+    
+   res
+}
 
 
-
-
-
+#' add \code{#} prefix to id
+#'
+#' add \code{#} prefix to id
+#'
+#' @param x (character) with \code{#} or not.
+#'
+#' @return a character with \code{#} prefix.
+#'
+#' @export addIdNum
+#' @examples
+#' addIdNum("bam")
+addIdNum <- function(x){
+    .first <- substr(x, 1, 1)
+    if(.first != "#"){
+        return(paste0("#", x))
+    }else{
+        return(x)
+    }
+}

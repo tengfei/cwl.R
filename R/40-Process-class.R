@@ -1,67 +1,6 @@
 ########################################################################
 ## Process
 ########################################################################
-
-
-##----------------------------------------------------------------------
-## Schema
-##----------------------------------------------------------------------
-
-#' SchemaList
-#' 
-#' @aliases SchemaList-class
-#'
-#' @param \dots element or list of the element.
-#'
-#' @export SchemaList
-#' @exportClass SchemaList
-#' @rdname Schema
-#' @aliases ScehmaList
-SchemaList <- setListClass("Schema")
-
-#' Schema Class
-#'
-#' A schema defines a parameter type.
-#'
-#' @field type (ANY) The data type of this parameter.
-#' 
-#' @field fields [SchemaList] When type is record, defines the fields of the
-#' record.
-#' 
-#' @field symbols [character] When type is enum, defines the set of valid symbols.
-#' 
-#' @field items [ANY] When type is array, defines the type of the array
-#' elements.
-#' 
-#' @field values [ANY] When type is map, defines the value type for the
-#' key/value pairs.
-#'
-#' @export Schema
-#' @exportClass Schema
-#' @rdname Schema
-#' @aliases Schema
-#' @examples
-#' Schema(fields = SchemaList(SchemaDef(name = "schema")))
-Schema <- setRefClass("Schema",  contains = "CWL", 
-                      fields = list(
-                          type = "ANY", # fixme: Datatype | Schema | string
-                          fields = "SchemaList",
-                          symbols = "character",
-                          items = "ANY",
-                          values = "ANY"
-                      ))
-
-#' SchemaDef Class
-#'
-#' @export SchemaDef
-#' @exportClass SchemaDef
-#' @rdname Schema
-#' @aliases SchemaDef
-SchemaDef <- setRefClass("SchemaDef", contains = "Schema",
-                         fields = list(
-                             name = "character"
-                         ))
-
 #' SchemaDefList
 #' 
 #' @aliases SchemaDefList-class
@@ -108,7 +47,7 @@ setRefClass("SchemaDefRequirement", contains = "ProcessRequirement",
 #' @rdname Binding
 #' @examples
 #' Binding(loadContents = TRUE, secondaryFiles = "./test.txt")
-Binding <- setRefClass("Binding",
+Binding <- setRefClass("Binding", contains = "CWL", 
                        fields = list(
                            loadContents = "logical",
                            secondaryFiles = "characterORExpression" ## fixme: should be a list
@@ -118,7 +57,7 @@ Binding <- setRefClass("Binding",
 ##======================================================================
 ## Parameter
 ##======================================================================
-
+    
 
 #' Paramter class (reference class)
 #'
@@ -172,15 +111,26 @@ Binding <- setRefClass("Binding",
 #' ipl
 Parameter <- setRefClass("Parameter", contains = "CWL",
                          fields = list(
-                             type = "ANY", # fixme
+                             type = "DSCList",
                              label = "character",
                              description = "character",
                              streamable = "logical",
                              default = "ANY"
                          ),
                          methods = list(
-                             initialize <- function(..., stream = FALSE){
-                                 stream <<- stream
+                             initialize = function(..., type = "",
+                                 streamable = FALSE){
+                                 if(is(type, "DSCList")){
+                                     type <<- type
+                                 }else{
+                                     if(is.character(type)){
+                                         .type <- deType(type)
+                                     }else{
+                                         .type <- type
+                                     }
+                                     type <<- DSCList(.type)
+                                 }
+                                 streamable <<- streamable
                                  callSuper(...)
                              }
                          ))
@@ -287,6 +237,12 @@ Process <- setRefClass("Process", contains = "CWL",
                            hints = "ANY", 
                            label = "character",
                            description = "character"
+                       ),
+                       methods = list(
+                           initialize = function(id = "", ...){
+                               id <<- addIdNum(id)
+                               callSuper(...)
+                           }
                        ))
 
 
@@ -332,6 +288,13 @@ InputParameter <- setRefClass("InputParameter", contains = "Parameter",
                               fields = list(
                                   id = "character",
                                   inputBinding = "Binding"
+                              ),
+                              methods = list(
+                                  initialize = function(id = "", ...){
+                                      id <<- addIdNum(id)
+                                      callSuper(...)
+                                  }
+
                               ))
 
 #' OutputParameter Class
@@ -345,6 +308,13 @@ InputParameter <- setRefClass("InputParameter", contains = "Parameter",
 OutputParameter <- setRefClass("OutputParameter", contains = "Parameter",
                                fields = list(
                                    id = "character"
+                               ),
+                               methods = list(
+                                   initialize = function(id = "", ...){
+                                       id <<- addIdNum(id)
+                                       callSuper(...)
+                                   }
+
                                ))
 
 

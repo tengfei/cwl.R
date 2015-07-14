@@ -60,15 +60,30 @@ CommandLineBinding <- setRefClass("CommandLineBinding",
                                       separate = "logical",
                                       itemSeparator = "character",
                                       valueFrom = "characterORExpression"
+                                  ),
+                                  methods = list(
+                                      initialize = function(
+                                          position = 0L,
+                                          separate = TRUE,
+                                          ...){
+                                          
+                                          position <<- position
+                                          separate <<- separate
+                                          callSuper(...)
+                                      }
                                   ))
-
 
 
 setClassUnion("characterORCommandLineBinding",
               c("character", "CommandLineBinding"))
 
-## fixme:
-setListClass("characterORCommandLineBinding")
+#' characterORCommandLineBindingList Class
+#'
+#' @export CCBList
+#' @exportClass characterORCommandLineBindingList
+#' @examples
+#' CCBList("-o output.bam")
+CCBList <- setListClass("characterORCommandLineBinding")
 
 #' CommandLineTool Class
 #'
@@ -231,6 +246,7 @@ setListClass("characterORCommandLineBinding")
 #'
 #' @export CommandLineTool
 #' @exportClass CommandLineTool
+#' @rdname CommandLineTool
 #'
 #' @examples
 #' ipl <- InputParameterList(
@@ -250,7 +266,8 @@ setListClass("characterORCommandLineBinding")
 #' )
 #' 
 #' clt <- CommandLineTool(inputs = ipl, baseCommand = "samtools sort")
-CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
+CommandLineTool <- setRefClass("CommandLineTool",
+                               contains = "Process",
                                fields = list(
                                    class = "character",
                                    baseCommand = "character",
@@ -263,7 +280,21 @@ CommandLineTool <- setRefClass("CommandLineTool", contains = "Process",
                                ),
                                method = list(
                                    initialize = function(class = "CommandLineTool",
+                                       arguments = "",
                                        ...){
+                                       if(is.character(arguments)){
+                                           arguments <<- CCBList(
+                                               CommandLineBinding(
+                                                   valueFrom = arguments
+                                               ))
+                                       }
+                                       if(is(arguments, "CommandLineBiding")){
+                                           arguments <<- CCBList(arguments)
+                                       }
+                                       if(is(arguments,
+                                             "characterORCommandLineBindingList")){
+                                           arguments <<- arguments
+                                       }
                                        class <<- class
                                        callSuper(...)
                                    }

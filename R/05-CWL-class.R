@@ -5,12 +5,12 @@
 #' @aliases CWL-class
 #' 
 #' @importFrom yaml as.yaml
-#' @importFrom jsonlite toJSON prettify
+#' @importFrom jsonlite toJSON prettify unbox
 #' @importFrom methods showDefault
 #'
 #' @export CWL
 #' @exportClass CWL
-#'
+#' @rdname CWL
 #' @examples
 #' ## no fields, only to provide methods to be extended
 #' x <- CWL()
@@ -21,7 +21,6 @@ CWL <- setRefClass("CWL",
                             does not assume the value is primitive type.
                            '
                            ## from Martin's code
-                           ## http://stackoverflow.com/questions/18713847/return-a-list-of-fields-of-a-reference-class
                            flds = names(getRefClass()$fields())
                            if (!missing(values))
                                flds = flds[flds %in% values]
@@ -37,19 +36,37 @@ CWL <- setRefClass("CWL",
                            res <- .self$getFields()
                            res <- lapply(res, function(x){
                                    asList(x) ## until it's not s4 or cwl or SimpleLi
-                           })
+                               })
+                           ## mark unbox
+                           ## recurseively unbox single string for JSON
+                           ## need to test YAML
+                           res <- rapply(res, function(x){
+                               if(!is(x, "scalar") &&
+                                  (is.character(x) ||
+                                       is.numeric(x) || is.logical(x))){
+                                   if(length(x) == 1){
+                                       if(!inherits(x, "DSCList")){
+                                           return(unbox(x))
+                                       }else{
+                                           return(x)
+                                       }
+                                   }else if(is.character(x) && length(x) == 0){
+                                       ## need to avoid type in cwl
+                                       return(unbox(""))
+                                   }else{
+                                       return(x)
+                                   }
+                               }else{
+                                   return(x)
+                               }
+
+                           }, how = "replace")
+
                            return(res)
                        },
                        toYAML = function(...){
                            'Covert object to YAML'
                            l <- .self$toList()
-                           ## try to convert 
-                           ## err <- try(yaml::as.yaml(l, ...),
-                           ##            silent = TRUE)
-                           ## if(inherits(err, "try-error"){
-                           ##     warning("toYAML not implemented for class",
-                           ##             class(.self))
-                           ## })
                            yaml::as.yaml(l, ...)
 
                        },
@@ -79,10 +96,6 @@ CWL <- setRefClass("CWL",
                                   })
                        }                       
                    ))
-
-
-
-
 
 #' Convert a object slots/fields to a list, json, yaml file
 #'
@@ -168,7 +181,7 @@ setMethod("asList", "SimpleList", function(object, ...){
     if(length(object)){
         res <- lapply(object, asList)         
     }else{
-        res <- ""
+        res <- list()
     }
     res
 })
@@ -197,6 +210,7 @@ setGeneric("asJSON", function(object, ...) standardGeneric("asJSON"))
 setMethod("asJSON", "ANY", function(object, ...){
     jsonlite::toJSON(asList(object), ...)
 })
+
 
 
 
