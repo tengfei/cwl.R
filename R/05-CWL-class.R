@@ -88,8 +88,8 @@ CWL <- setRefClass("CWL",
                                       }
                                   },
                                   JSON = {
-                                      err <- try(jsonlite::prettify(
-                                          .self$toJSON(...)), silent = TRUE)
+                                      err <- try(print(jsonlite::prettify(
+                                          .self$toJSON(...))), silent = TRUE)
                                       if(inherits(err, "try-error")){
                                           showDefault(.self)
                                       }
