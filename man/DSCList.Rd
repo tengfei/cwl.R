@@ -6,6 +6,9 @@
 \usage{
 DSCList(...)
 }
+\value{
+a DSCList
+}
 \description{
 Contains DataypeSingleEnum, Schema, character
 }

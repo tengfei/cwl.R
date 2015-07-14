@@ -6,6 +6,9 @@
 \usage{
 CCBList(...)
 }
+\value{
+CCBList
+}
 \description{
 characterORCommandLineBindingList Class
 }

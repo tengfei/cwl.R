@@ -81,6 +81,9 @@ setClassUnion("characterORCommandLineBinding",
 #'
 #' @export CCBList
 #' @exportClass characterORCommandLineBindingList
+#'
+#' @return CCBList
+#' 
 #' @examples
 #' CCBList("-o output.bam")
 CCBList <- setListClass("characterORCommandLineBinding")

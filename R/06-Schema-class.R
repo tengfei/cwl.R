@@ -5,6 +5,8 @@
 #' @export DSCList
 #' @exportClass DSCList
 #'
+#' @return a DSCList
+#'
 #' @examples
 #' DSCList("test", DatatypeEnum(), Schema())
 DSCList <- setListClass("DSC")
