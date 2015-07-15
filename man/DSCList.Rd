@@ -2,9 +2,13 @@
 % Please edit documentation in R/06-Schema-class.R
 \name{DSCList}
 \alias{DSCList}
+\alias{DSCList-class}
 \title{DSC list}
 \usage{
 DSCList(...)
+}
+\arguments{
+\item{\dots}{element or list of the element.}
 }
 \value{
 a DSCList

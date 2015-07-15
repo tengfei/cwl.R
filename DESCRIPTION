@@ -7,7 +7,7 @@ Author: Tengfei Yin <tengfei.yin@sbgenomics.com>, Nan Xiao <nanx@uchicago.edu>
 Maintainer: Tengfei Yin <tengfei.yin@sbgenomics.com>
 biocViews: Infrastructure, DataRepresentation
 Description: Based on Common Workflow Language Draft2, define a set of class in R and provide some utilities to dump to JSON or YAML.
-License: MIT + file LICENSE
+License: Artistic-2.0
 VignetteBuilder: knitr
 URL: http://common-workflow-language.github.io/
 BugReports: https://github.com/tengfei/cwl.R/issues

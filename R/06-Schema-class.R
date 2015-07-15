@@ -2,10 +2,12 @@
 #'
 #' Contains DataypeSingleEnum, Schema, character
 #'
+#' @param \dots element or list of the element.
 #' @export DSCList
 #' @exportClass DSCList
 #'
 #' @return a DSCList
+#' @aliases DSCList DSCList-class
 #'
 #' @examples
 #' DSCList("test", DatatypeEnum(), Schema())

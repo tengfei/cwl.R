@@ -79,9 +79,11 @@ setClassUnion("characterORCommandLineBinding",
 
 #' characterORCommandLineBindingList Class
 #'
+#' @param \dots element or list of the element.
 #' @export CCBList
 #' @exportClass characterORCommandLineBindingList
 #'
+#' @aliases CCBList characterORCommandLineBindingList-class
 #' @return CCBList
 #' 
 #' @examples

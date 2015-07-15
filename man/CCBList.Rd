@@ -2,9 +2,13 @@
 % Please edit documentation in R/60-CommandLineTool-class.R
 \name{CCBList}
 \alias{CCBList}
+\alias{characterORCommandLineBindingList-class}
 \title{characterORCommandLineBindingList Class}
 \usage{
 CCBList(...)
+}
+\arguments{
+\item{\dots}{element or list of the element.}
 }
 \value{
 CCBList

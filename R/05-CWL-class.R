@@ -38,7 +38,7 @@ CWL <- setRefClass("CWL",
                                    asList(x) ## until it's not s4 or cwl or SimpleLi
                                })
                            ## mark unbox
-                           ## recurseively unbox single string for JSON
+                           ## recurseively jsonlite::unbox single string for JSON
                            ## need to test YAML
                            res <- rapply(res, function(x){
                                if(!is(x, "scalar") &&
@@ -46,13 +46,13 @@ CWL <- setRefClass("CWL",
                                        is.numeric(x) || is.logical(x))){
                                    if(length(x) == 1){
                                        if(!inherits(x, "DSCList")){
-                                           return(unbox(x))
+                                           return(jsonlite::unbox(x))
                                        }else{
                                            return(x)
                                        }
                                    }else if(is.character(x) && length(x) == 0){
                                        ## need to avoid type in cwl
-                                       return(unbox(""))
+                                       return(jsonlite::unbox(""))
                                    }else{
                                        return(x)
                                    }
