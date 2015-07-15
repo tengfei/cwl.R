@@ -3,7 +3,7 @@ Type: Package
 Title: R objects for common work flow language representation
 Version: 0.99.0
 Date: 2015-06-01
-Author: Tengfei Yin <tengfei.yin@sbgenomics.com>, Nan Xiao <nan.xiao@sbgenomics.com>
+Author: Tengfei Yin <tengfei.yin@sbgenomics.com>, Nan Xiao <nanx@uchicago.edu>
 Maintainer: Tengfei Yin <tengfei.yin@sbgenomics.com>
 biocViews: Infrastructure, DataRepresentation
 Description: Based on Common Workflow Language Draft2, define a set of class in R and provide some utilities to dump to JSON or YAML.
