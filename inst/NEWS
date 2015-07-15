@@ -1,0 +1,10 @@
+CHANGES IN VERSION 0.99.0
+------------------------
+
+NEW FEATURES
+    o First submission to Biocondcutor
+    o Defined a set of CWL class
+    o utitlies like asList, asYAML, asJSON or object$toList, object$toYAML , object$toJSON 
+
+
+
