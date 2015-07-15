@@ -9,7 +9,7 @@ Reference please check
 
 Please pay attention that the github project name is **NOT** `cwl`, but `cwl.R'
 
-### From github
+#### From github
 Directly install from github, need to install Bioc dependency first. 
 
 ```{r}
@@ -19,7 +19,7 @@ biocLite("S4Vectors")
 library(devtools)
 install_github('tengfei/cwl.R')
 ```
-### From Bioconductor
+#### From Bioconductor
 
 When it's on Bioconductor, to install released version
 
@@ -35,3 +35,15 @@ source("http://bioconductor.org/biocLite.R")
 useDevel()
 biocLite("cwl")
 ```
+
+## Use the package
+To load the pacakges
+```{r}
+library(cwl)
+```
+
+To read the vignette
+```{r}
+vignette("cwl-intro")
+```
+
